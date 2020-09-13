@@ -6,8 +6,8 @@ import Login from "./components/Login";
 import List from "./components/List";
 
 export default function App() {
+  const ngrok = "http://95965e00ccb6.ngrok.io";
   const [items, setItems] = useState([]);
-
   const [token, setToken] = useState("");
   const [view, setView] = useState("main");
 
@@ -28,7 +28,7 @@ export default function App() {
       const _token = await AsyncStorage.getItem("@jwt");
       setToken(_token);
       if (_token !== null) {
-        fetch("http://719313905c62.ngrok.io/items", {
+        fetch(`${ngrok}/items`, {
           method: "GET",
           headers: {
             authorization: `Bearer ${_token}`,
@@ -53,7 +53,7 @@ export default function App() {
   };
 
   const doLogin = (email, password) => {
-    fetch("http://719313905c62.ngrok.io/login", {
+    fetch(`${ngrok}/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
