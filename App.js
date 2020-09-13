@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, View, Text, Alert } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
+
 import Login from "./components/Login";
+import List from "./components/List";
 
 export default function App() {
+  const [items, setItems] = useState([]);
+
   const [token, setToken] = useState("");
+  const [view, setView] = useState("main");
 
   const storeData = async value => {
     try {
@@ -14,8 +19,41 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const _token = await AsyncStorage.getItem("@jwt");
+      setToken(_token);
+      if (_token !== null) {
+        fetch("http://719313905c62.ngrok.io/items", {
+          method: "GET",
+          headers: {
+            authorization: `Bearer ${_token}`,
+          },
+        })
+          .then(response => response.json())
+          .then(json => {
+            if (json.success) {
+              json.items.map(item => (item.key = item.id + ""));
+              setItems(json.items);
+            } else {
+              setToken(null);
+            }
+          })
+          .catch(error => {
+            setToken(null);
+          });
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   const doLogin = (email, password) => {
-    fetch("http://localhost:3010/login", {
+    fetch("http://719313905c62.ngrok.io/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -41,7 +79,7 @@ export default function App() {
   return (
     <>
       <SafeAreaView>
-        <Login doLogin={doLogin} />
+        {token === null ? <Login doLogin={doLogin} /> : <List items={items} />}
       </SafeAreaView>
     </>
   );
