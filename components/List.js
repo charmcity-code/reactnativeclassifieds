@@ -8,12 +8,17 @@ import {
 } from "react-native";
 
 const List = props => {
+  const showDetail = item => {
+    props.setView("detail");
+    props.setItem(item);
+  };
+
   return (
     <View>
       <FlatList
         data={props.items}
         renderItem={({ item }) => (
-          <TouchableHighlight>
+          <TouchableHighlight onPress={() => showDetail(item)}>
             <View style={styles.itemWrapper}>
               <Text style={styles.item}>{item.title}</Text>
               <Text style={styles.item}>${item.price}</Text>

@@ -4,12 +4,14 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import Login from "./components/Login";
 import List from "./components/List";
+import Detail from "./components/Detail";
 
 export default function App() {
   const ngrok = "http://95965e00ccb6.ngrok.io";
   const [items, setItems] = useState([]);
   const [token, setToken] = useState("");
-  const [view, setView] = useState("main");
+  const [view, setView] = useState("main"); //views: main, new, detail
+  const [item, setItem] = useState({});
 
   const storeData = async value => {
     try {
@@ -79,7 +81,15 @@ export default function App() {
   return (
     <>
       <SafeAreaView>
-        {token === null ? <Login doLogin={doLogin} /> : <List items={items} />}
+        {view === "new" ? (
+          <></>
+        ) : view === "detail" ? (
+          <Detail item={item} setView={setView} />
+        ) : token ? (
+          <List items={items} setView={setView} setItem={setItem} />
+        ) : (
+          <Login doLogin={doLogin} />
+        )}
       </SafeAreaView>
     </>
   );
