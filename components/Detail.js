@@ -22,7 +22,7 @@ const Detail = props => {
       </View>
       <View style={styles.button}>
         <Button
-          title='📨 Contact seller'
+          title='📨 Contact person'
           onPress={() => {
             const url = `mailto:${props.item.email}?subject=${props.item.title}`;
             Linking.canOpenURL(url)

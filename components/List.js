@@ -5,6 +5,8 @@ import {
   FlatList,
   TouchableHighlight,
   StyleSheet,
+  Button,
+  Alert,
 } from "react-native";
 
 const List = props => {
@@ -26,11 +28,20 @@ const List = props => {
           </TouchableHighlight>
         )}
       />
+      <View style={styles.button}>
+        <Button
+          title='✚ Add new item'
+          onPress={() => props.setView("new")}
+        ></Button>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  button: {
+    paddingVertical: 20,
+  },
   item: {
     padding: 10,
     fontSize: 18,

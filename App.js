@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Login from "./components/Login";
 import List from "./components/List";
 import Detail from "./components/Detail";
+import New from "./components/New";
 
 export default function App() {
   const ngrok = "http://95965e00ccb6.ngrok.io";
@@ -78,11 +79,37 @@ export default function App() {
       });
   };
 
+  const addItem = (title, price, description) => {
+    fetch(`${ngrok}/new`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        price,
+        description,
+      }),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.success) {
+          setItems(json.items);
+          setView("list");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <SafeAreaView>
         {view === "new" ? (
-          <></>
+          <New addItem={addItem} setView={setView} />
         ) : view === "detail" ? (
           <Detail item={item} setView={setView} />
         ) : token ? (
