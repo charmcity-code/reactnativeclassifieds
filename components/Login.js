@@ -11,7 +11,7 @@ import {
 
 const Login = props => {
   const [email, setEmail] = useState("your@email.com");
-  const [password, setPassword] = useState("secret");
+  const [password, setPassword] = useState("ssseeeecrreeet");
 
   return (
     <ScrollView
@@ -31,7 +31,7 @@ const Login = props => {
             style={styles.textInput}
             placeholder='Password'
             secureTextEntry={true}
-            defaultValue='secret'
+            defaultValue='ssseeeecrreeet'
             onChangeText={password => setPassword(password)}
           />
         </View>
